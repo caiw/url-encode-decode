@@ -1,0 +1,27 @@
+#!/usr/bin/env python
+
+import sys
+import codecs
+import urllib.parse
+
+if __name__ == '__main__':
+
+    # Use stdin if it's full. This enables pipes etc.
+    # Cheers to https://stackoverflow.com/a/11111088/2883198 for how to accept pipes in python.
+    if not sys.stdin.isatty():
+        input_stream = sys.stdin
+
+    # Otherwise, interpret the first argument as a filename and read it.
+    else:
+        try:
+            input_filename = sys.argv[1]
+        except IndexError:
+            message = 'Either supply a filename as the first argument or make sure stdin is full.'
+            raise IndexError(message)
+        else:
+            input_stream = open(input_filename, 'rU')
+
+    for line in input_stream:
+        print(urllib.parse.unquote(line))  # do something useful with each line
+
+    input_stream.close()
